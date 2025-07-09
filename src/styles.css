@@ -1,0 +1,94 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+}
+
+.navbar {
+    background-color: lightgray;
+    padding: 1rem;
+}
+
+
+.main-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+ul#projects {
+    flex-grow: 1;
+    display: flex;
+    list-style-type: none;
+    gap: 1rem;
+    align-items: flex-start;
+
+}
+
+li.project {
+    border: 1px solid lightgray;
+    background-color: white;
+    padding: 1rem;
+    flex: 0 0 400px;
+}
+
+div.title-button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+h2.project-title {
+    padding-top: 2px;
+}
+
+button.new-task-button {
+    border-radius: 0;
+    cursor: pointer;
+    padding: 0.4em 0.8em;
+}
+
+.todos-list {
+    list-style-type: none;
+}
+
+
+
+.title-prio-wrap {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+}
+
+
+div.todo-text {
+    font-family: inherit;
+    flex-grow: 1;
+    min-height: 1.5rem;
+    line-height: 1.2;
+}
+
+
+
+
+.priority-indicator {
+    background-color: orange;
+    /* width: 15px; */
+    height: 15px;
+    border-radius: 50%;
+    margin-top: 1px;
+    flex: 0 0 15px;
+}
