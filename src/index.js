@@ -46,13 +46,13 @@ class Project {
 }
 
 const Projects = (() => {
-// module pattern for storing projects in an array
+// module pattern for the array containing all projects
 
     let projects = [];
 
     function addProject(title) {
         const project = new Project(title);
-        projects.unshift(project);
+        projects.unshift(project); // add new projects to start of list instead of the end
     };
 
     function removeProject(id) {
@@ -83,6 +83,7 @@ class ProjectElement {
 
     constructor(project) {
         this.project = project; // reference to project instance
+        this.id = this.project.id; // store same id as original project instance
         this.element = this.createProject();
     }
 
@@ -105,7 +106,14 @@ class ProjectElement {
             this.addTaskClickHandler();
         });
 
-        wrapper.append(title, taskButton);
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "DLT";
+        deleteBtn.classList.add("delete-proj-button");
+        deleteBtn.addEventListener("click", () => {
+            this.deleteProjectClickHandler();
+        });
+
+        wrapper.append(title, taskButton, deleteBtn);
 
         this.todosList = document.createElement("ul"); // store reference to this project's specific UL 
         this.todosList.classList.add("todos-list");
@@ -115,12 +123,19 @@ class ProjectElement {
         return proj;
     }
 
+
+
     addTaskClickHandler() {
         this.project.addTodo("New Task", "Medium");
-        this.updateDisplayedTodos();
+        this.renderTodos();
     }
 
-    updateDisplayedTodos() {
+    deleteProjectClickHandler() {
+        UI.deleteProject(this.id);
+    }
+
+    
+    renderTodos() {
 
         this.todosList.innerHTML = ""; 
 
@@ -156,13 +171,18 @@ class TodoElement {
         todo.classList.add("todo-item");
 
         const wrap = document.createElement("div");
-        this.text = document.createElement("div");
-        this.text.contentEditable = "plaintext-only";
-        this.text.textContent = this.todo.text;
-        const prio = document.createElement("div");
-
         wrap.classList.add("title-prio-wrap");
+
+        this.text = document.createElement("div");
         this.text.classList.add("todo-text");
+        this.text.contentEditable = "plaintext-only";
+        this.text.textContent = this.todo.text; 
+        this.text.addEventListener("blur", () => {
+            // store user inputted todo text once user clicks away from todo item
+            this.handleUserTextInput();
+        });
+
+        const prio = document.createElement("div");
         prio.classList.add("priority-indicator");
 
         wrap.append(this.text, prio);
@@ -170,26 +190,79 @@ class TodoElement {
 
         return todo;
     }
+
+
+    // function that saves input text from user when changing todo item textcontent
+    handleUserTextInput() {
+        this.todo.text = this.text.innerText;
+    }
 }
 
 
-// function that displays projects on UI
-function displayProjects() {
+
+
+const UI = (() => {
+
+    const newProjectButton = document.querySelector("#new-project-button");
+    const newProjectPopup = document.querySelector("#new-project-popup");
+    const confirmBtn = document.querySelector("#confirm-button");
+    const cancelBtn = document.querySelector("#cancel-button");
+    const projectNameInput = document.querySelector("#project-name-input");
+
+    newProjectButton.addEventListener("click", openAddProjectPopup);
+    confirmBtn.addEventListener("click", confirmProjectHandler);
+    cancelBtn.addEventListener("click", closeAddProjectPopup);
+
+
     const projectsContainer = document.querySelector("#projects");
+    const renderedProjects = new Set(); 
 
-    for (const project of Projects.getAllProjects()) {
-        const newProj = new ProjectElement(project);
-        projectsContainer.append(newProj.element);
+
+    function deleteProject(id) {
+        projectsContainer.querySelector(`[data-id="${id}"]`).remove();
+        renderedProjects.delete(id);
+        Projects.removeProject(id);
     }
-};
+
+
+    function renderProjects() {
+
+        Projects.getAllProjects().forEach(project => {
+            if(!renderedProjects.has(project.id)) {
+                const projectElement = new ProjectElement(project);
+                projectsContainer.prepend(projectElement.element);
+                renderedProjects.add(project.id);
+            };
+        });
+
+    };
+
+    function openAddProjectPopup() {
+        newProjectButton.classList.add("hidden");
+        newProjectPopup.classList.remove("hidden");
+    };
+
+    function closeAddProjectPopup() {
+        newProjectPopup.classList.add("hidden");
+        newProjectButton.classList.remove("hidden");
+    }
+
+    function confirmProjectHandler() {
+        Projects.addProject(projectNameInput.value);
+        renderProjects();
+        closeAddProjectPopup();
+    }
+
+    return {
+        renderProjects,
+        deleteProject
+    };
+
+})();
 
 
 
 
-// Tests
-Projects.addProject("Test Project");
 
-document.addEventListener('DOMContentLoaded', () => {
-    displayProjects();
-});
+
 
