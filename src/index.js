@@ -141,7 +141,7 @@ class ProjectElement {
 
         for (const todo of this.project.todos) {
 
-            const todoElement = new TodoElement(todo, this.project);
+            const todoElement = new TodoElement(todo, this.project, this);
             this.todosList.append(todoElement.element);
             todoElement.text.focus(); // focus input to newly created list item
 
@@ -157,9 +157,10 @@ class ProjectElement {
 // class for creating todo instances as DOM elements 
 class TodoElement {
 
-    constructor(todo, project) {    
+    constructor(todo, project, projectElement) {    
         this.todo = todo; // reference to todo instance
         this.project = project; // reference to parent project
+        this.projectElement = projectElement; // reference to parent projectElement
         this.element = this.createTodo();
     }
 
@@ -178,14 +179,20 @@ class TodoElement {
         this.text.contentEditable = "plaintext-only";
         this.text.textContent = this.todo.text; 
         this.text.addEventListener("blur", () => {
-            // store user inputted todo text once user clicks away from todo item
+            // store user text input once user clicks away from todo item
             this.handleUserTextInput();
+        });
+
+        const removeBtn = document.createElement("button");
+        removeBtn.classList.add("remove-todo-button");
+        removeBtn.addEventListener("click", () => {
+            this.handleRemoveClick();
         });
 
         const prio = document.createElement("div");
         prio.classList.add("priority-indicator");
 
-        wrap.append(this.text, prio);
+        wrap.append(this.text, removeBtn, prio);
         todo.append(wrap);
 
         return todo;
@@ -195,6 +202,11 @@ class TodoElement {
     // function that saves input text from user when changing todo item textcontent
     handleUserTextInput() {
         this.todo.text = this.text.innerText;
+    }
+
+    handleRemoveClick() {
+        this.project.removeTodo(this.todo.id);
+        this.projectElement.renderTodos();
     }
 }
 

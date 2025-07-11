@@ -116,11 +116,27 @@ h2.project-title {
 }
 
 
+
 div.todo-text {
     font-family: inherit;
     flex-grow: 1;
     min-height: 1.1rem;
     line-height: 1.1;
+    outline: none;
+}
+
+.remove-todo-button {
+    display: none; /* remove todo button is invisible until user hovers over todo */
+    border: 1px solid black;
+    height: 15px;
+    margin-top: 1px;
+    flex: 0 0 15px;
+    border-radius: 50%;
+}
+
+.title-prio-wrap:hover .remove-todo-button {
+    display: inline-block;
+    cursor: pointer;
 }
 
 
