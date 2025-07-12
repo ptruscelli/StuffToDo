@@ -1,3 +1,4 @@
+
 import "./styles.css";
 
 
@@ -45,28 +46,82 @@ class Project {
     }
 }
 
+
+
+
 const Projects = (() => {
 // module pattern for the array containing all projects
 
     let projects = [];
 
+
     function addProject(title) {
         const project = new Project(title);
         projects.unshift(project); // add new projects to start of list instead of the end
+        updateStorage();
     };
+
 
     function removeProject(id) {
         projects = projects.filter(proj => proj.id !== id);
+        updateStorage();
     };
+
 
     function getAllProjects() {
         return [...projects];
     };
+
+
+
+    function loadFromStorage() {
+
+        const storedProjects = JSON.parse(localStorage.getItem("projects"));
+
+        if (storedProjects !== null && storedProjects.length !== 0) {
+            console.log("found existing projects!")
+            projects = storedProjects.map(proj => reconstructProject(proj));
+        };
+    };
+
+
+    function reconstructProject(proj) {
+
+        console.log("reconstructing projects");
+
+        const project = new Project(proj.title);
+        project.id = proj.id;
+
+        console.log("reconstructing todos")
+        project.todos = proj.todos.map(todo => {
+
+            const newTodo = new Todo(todo.priority);
+            newTodo.text = todo.text;
+            newTodo.completed = todo.completed;
+            newTodo.id = todo.id;
+
+            return newTodo;
+
+        });
+
+        return project;
+    };
+
+
+    function updateStorage() {
+        localStorage.setItem("projects", JSON.stringify(projects));
+    };
+
+
+    // loadFromStorage();
     
+
     return {
         addProject,
         removeProject,
-        getAllProjects
+        getAllProjects,
+        updateStorage,
+        loadFromStorage
     };
 })();
 
@@ -126,7 +181,7 @@ class ProjectElement {
 
 
     addTaskClickHandler() {
-        this.project.addTodo("New Task", "Medium");
+        this.project.addTodo("Medium");
         this.renderTodos();
     }
 
@@ -146,6 +201,8 @@ class ProjectElement {
             todoElement.text.focus(); // focus input to newly created list item
 
         };
+
+        Projects.updateStorage();
 
     }
 
@@ -202,6 +259,7 @@ class TodoElement {
     // function that saves input text from user when changing todo item textcontent
     handleUserTextInput() {
         this.todo.text = this.text.innerText;
+        Projects.updateStorage();
     }
 
     handleRemoveClick() {
@@ -209,6 +267,7 @@ class TodoElement {
         this.projectElement.renderTodos();
     }
 }
+
 
 
 
@@ -237,12 +296,15 @@ const UI = (() => {
     }
 
 
-    function renderProjects() {
+    function renderProjects(loadFromStorage = false) {
 
         Projects.getAllProjects().forEach(project => {
             if(!renderedProjects.has(project.id)) {
                 const projectElement = new ProjectElement(project);
-                projectsContainer.prepend(projectElement.element);
+                projectElement.renderTodos();
+                loadFromStorage ? // maintain correct order of project dispay (newest -> oldest)
+                    projectsContainer.append(projectElement.element) : // render from storage
+                    projectsContainer.prepend(projectElement.element); // render from new project added
                 renderedProjects.add(project.id);
             };
         });
@@ -261,9 +323,14 @@ const UI = (() => {
 
     function confirmProjectHandler() {
         Projects.addProject(projectNameInput.value);
-        renderProjects();
+        renderProjects(false);
         closeAddProjectPopup();
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        Projects.loadFromStorage();
+        renderProjects(true);
+    });
 
     return {
         renderProjects,
