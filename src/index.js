@@ -1,5 +1,10 @@
 
+import AirDatepicker from "air-datepicker";
+import localeEn from 'air-datepicker/locale/en';
+
 import "./styles.css";
+
+
 
 
 // ============================================================================
@@ -14,6 +19,7 @@ class Todo {
         this.text = "";
         this.priority = priority;
         this.completed = false;
+        this.dueDate = "";
         this.id = crypto.randomUUID();
     }
 
@@ -99,6 +105,7 @@ const Projects = (() => {
             newTodo.text = todo.text;
             newTodo.completed = todo.completed;
             newTodo.id = todo.id;
+            newTodo.dueDate = todo.dueDate;
 
             return newTodo;
 
@@ -218,6 +225,7 @@ class TodoElement {
         this.todo = todo; // reference to todo instance
         this.project = project; // reference to parent project
         this.projectElement = projectElement; // reference to parent projectElement
+        this.dueDate = this.todo.dueDate;
         this.element = this.createTodo();
     }
 
@@ -230,6 +238,9 @@ class TodoElement {
 
         const wrap = document.createElement("div");
         wrap.classList.add("title-prio-wrap");
+
+        const info = document.createElement("div");
+        info.classList.add("todo-info");
 
         this.text = document.createElement("div");
         this.text.classList.add("todo-text");
@@ -246,11 +257,30 @@ class TodoElement {
             this.handleRemoveClick();
         });
 
-        const prio = document.createElement("div");
-        prio.classList.add("priority-indicator");
+        const dueBy = document.createElement("div");
+        dueBy.classList.add("due-date");
+        dueBy.textContent = "Due:";
 
-        wrap.append(this.text, removeBtn, prio);
-        todo.append(wrap);
+        const datePicker = document.createElement("input");
+        datePicker.value = this.dueDate;
+        datePicker.type = "text";
+        datePicker.classList.add("date-picker");
+        datePicker.placeholder = "Select Date";
+        new AirDatepicker (datePicker, {
+            locale: localeEn,
+            dateFormat: "EEEE dd MMM",
+            onSelect: ({ formattedDate }) => {
+                this.todo.dueDate = formattedDate;
+                console.log(this.todo.dueDate);
+                Projects.updateStorage();
+            }
+        });
+
+        // const prio = document.createElement("div");
+        // prio.classList.add("priority-indicator");
+        info.append(dueBy, datePicker);
+        wrap.append(this.text, removeBtn);
+        todo.append(wrap, info);
 
         return todo;
     }
@@ -273,6 +303,11 @@ class TodoElement {
 
 
 const UI = (() => {
+
+    new AirDatepicker(".date-picker", {
+        locale: localeEn,
+        dateFormat: "EEEE dd MMM"
+    });
 
     const newProjectButton = document.querySelector("#new-project-button");
     const newProjectPopup = document.querySelector("#new-project-popup");
@@ -317,6 +352,7 @@ const UI = (() => {
     };
 
     function closeAddProjectPopup() {
+        projectNameInput.value = ""; // clear text input content for next use
         newProjectPopup.classList.add("hidden");
         newProjectButton.classList.remove("hidden");
     }

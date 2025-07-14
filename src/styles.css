@@ -17,6 +17,7 @@ body {
     display: flex;
     flex-direction: column;
     /* align-items: flex-start; */
+
 }
 
 h1 {
@@ -115,9 +116,12 @@ h2.project-title {
     margin-bottom: 4px;
 }
 
+.done-check {
+    margin-top: 1px;
+    margin-right: 0.5rem;
+}
 
-
-div.todo-text {
+.todo-text {
     font-family: inherit;
     flex-grow: 1;
     min-height: 1.1rem;
@@ -140,11 +144,30 @@ div.todo-text {
 }
 
 
+.todo-info {
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+}
+
 .priority-indicator {
     background-color: orange;
     /* width: 15px; */
     height: 15px;
     border-radius: 50%;
-    margin-top: 1px;
     flex: 0 0 15px;
+}
+
+
+
+/* air date picker */
+
+#calendar {
+height: 100px;
+}
+
+
+
+body {
+    
 }
