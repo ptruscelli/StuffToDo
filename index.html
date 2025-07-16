@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StuffNeedsDoing</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/air-datepicker@3.5.3/air-datepicker.css">
+<script defer src="main.js"></script></head>
+<body>
+    
+
+
+
+    <div class="navbar">
+        <h1>StuffNeedsDoing</h1>
+        <button id="new-project-button">+ New Project</button>
+        <div id="new-project-popup" class="hidden">
+            <input type="text" id="project-name-input" placeholder="Project Name" autocomplete="off">
+            <button id="confirm-button" class="popup-buttons">Confirm</button>
+            <button id="cancel-button" class="popup-buttons">Cancel</button>
+        </div>
+    </div>
+
+
+    <div class="main-container">
+
+        <ul id="projects">
+
+            <li class="project">
+
+                <div class="title-button-wrapper">
+                    <h2 class="project-title">Personal Tasks</h2>
+                    <button class="new-task-button">+ New Task</button>
+                    <button class="delete-proj-button">
+                        
+                    </button>
+                </div>
+                
+                <ul class="todos-list">
+
+                    <li class="todo-item">
+
+                        <div class="check-text-wrap">
+                            <input type="checkbox" class="done-check">
+                            <div contenteditable="plaintext-only" class="todo-text">This is a visual test project</div>
+                            <button class="remove-todo-button"></button>
+                        </div>
+
+                        <div class="todo-info">
+                            <!-- <div class="priority-indicator"></div> -->
+                            <div class="due-date">Due:</div>
+                            <input type="text" class="date-picker" placeholder="Select Date">
+                        </div>
+
+                    </li>
+
+                    
+
+                </ul>
+            </li>
+
+        </ul>
+    
+    </div>
+</body>
+</html>
