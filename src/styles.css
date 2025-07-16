@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
 
 * {
@@ -6,6 +6,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    position: relative;
 }
 
 html, body {
@@ -13,37 +14,91 @@ html, body {
     width: 100%;
 }
 
+html {
+    background-color: white;
+}
+
 body {
+    background: url("./images/unsplash-pink-wave-larger.jpg") center/cover no-repeat;
+    backdrop-filter: blur(4px);
+    position: relative;
     display: flex;
     flex-direction: column;
-    /* align-items: flex-start; */
+    align-items: flex-start;
+    overflow: hidden;
 
 }
 
 h1 {
-
+    font-family: "Rubik";
+    font-weight: 600;
+    /* background: #a2e1eb;
+    background: linear-gradient(90deg,rgba(162, 225, 235, 1) 7%, rgba(65, 49, 189, 1) 17%, rgba(191, 106, 252, 1) 29%, rgba(238, 136, 247, 1) 52%, rgba(255, 234, 171, 1) 74%, rgba(153, 235, 240, 1) 100%);
+    background-clip: text;
+    color: transparent; */
+    font-size: 30px;
 }
 
 .navbar {
-    background-color: lightgray;
+    border-radius: 20px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.129);
+    height: 72px;
+    min-width: 1000px;
+    background-color: white;
+    margin: 1rem 0 0 1rem;
     padding: 1rem;
     display: flex;
     align-items: center;
     gap: 30px;
 }
 
+
+
+
 #new-project-button {
+    font-size: 14px;
     font-family: inherit;
-    border-radius: 0;
+    background-color: #f3f7fe;
+    color: #4f64dc;
+    border: none;
     cursor: pointer;
-    padding: 0.4em 0.6em;
+    border-radius: 8px;
+    width: 110px;
+    height: 40px;
+    transition: 0.2s;
 }
 
+#new-project-button:hover {
+    background-color: #3b82f6;
+    box-shadow: 0 0 0 4px #3b83f65f;
+    color: #fff;
+}
+
+#project-name-input {
+    background-color: rgb(237, 237, 237);
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    height: 30px;
+    width: 200px;
+    color: #000000;
+    font-size: 14px;
+    padding-left: 12px;
+    box-shadow: none;
+}
+
+
 .popup-buttons {
+    background-color: rgb(237, 237, 237);
     font-family: inherit;
-    border-radius: 0;
+    border-radius: 4px;
+    border: 1px solid transparent;
     cursor: pointer;
-    padding: 0.4em 0.6em;
+    padding: 0.5em 0.9em;
+}
+
+.popup-buttons:hover {
+    border-color: rgb(130, 130, 130);
 }
 
 .hidden {
@@ -52,13 +107,15 @@ h1 {
 
 
 .main-container {
+    min-width: 100vw;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
+    /* padding: 1.5rem; */
 }
 
 ul#projects {
+    padding: 1.2rem;
     flex-grow: 1;
     display: flex;
     list-style-type: none;
@@ -69,17 +126,27 @@ ul#projects {
 }
 
 li.project {
-    border: 1px solid lightgray;
-    background-color: white;
-    padding: 1rem;
+    padding: 1.8rem 0;
     flex: 0 0 400px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.102);
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.659);
+    backdrop-filter: blur(5px);
+}
+
+.project:hover {
+    /* outline: 1px solid lightblue; */
+    box-shadow: 
+        0px 2px 8px rgba(0, 0, 0, 0.13),
+        0px 2px 5px rgba(0, 0, 0, 0.12);
 }
 
 div.title-button-wrapper {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-bottom: 12px;
+    margin: 0 1.6rem;
+    margin-bottom: 1.5rem;
 }
 
 h2.project-title {
@@ -89,85 +156,139 @@ h2.project-title {
 
 .new-task-button {
     font-family: inherit;
-    border-radius: 0;
+    border-radius: 8px;
+    border: 1px solid rgb(96, 96, 96);
     cursor: pointer;
-    padding: 0.4em 0.8em;
+    padding: 0.6em 0.9em;
     margin-right: 1rem;
+    background: transparent;
+    color: rgb(96, 96, 96);
+}
+
+.new-task-button:hover {
+    background-color: rgba(255, 255, 255, 0.452);
+    color: rgb(50, 50, 50);
+    border-color: rgb(50, 50, 50);
 }
 
 .delete-proj-button {
+    visibility: hidden;
+    background-color: transparent;
     font-family: inherit;
-    border-radius: 0;
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    border: none;
     cursor: pointer;
-    padding: 0.4em 0.8em;
+    display: grid;
+    place-content: center;
+    /* padding: 0.4em 0.8em; */
+}
+
+.delete-proj-button:hover {
+    background-color: rgba(170, 170, 170, 0.375);
+
+}
+
+div.title-button-wrapper:hover .delete-proj-button {
+    visibility: visible;
 }
 
 .todos-list {
     list-style-type: none;
 }
 
-
-
-.title-prio-wrap {
+.todo-item {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding: 2px;
-    margin-bottom: 4px;
+    flex-direction: column;
+    margin: 1.4rem 0;
+    padding: 0 1.8rem;
 }
 
+.check-text-wrap {
+    display: flex;
+    align-items: flex-start;
+}
+
+
+
 .done-check {
-    margin-top: 1px;
-    margin-right: 0.5rem;
+    height: 16px;
+    width: 16px;
+    margin-right: 6px;
+    right: 6px;
 }
 
 .todo-text {
     font-family: inherit;
+    font-size: 1rem;
+    overflow-wrap: break-word;
     flex-grow: 1;
+    max-width: 285px;
     min-height: 1.1rem;
     line-height: 1.1;
     outline: none;
+    margin-right: auto;
+    /* margin-top: -1px; */
 }
 
 .remove-todo-button {
-    display: none; /* remove todo button is invisible until user hovers over todo */
-    border: 1px solid black;
-    height: 15px;
-    margin-top: 1px;
-    flex: 0 0 15px;
+    visibility: hidden; /* remove todo button is invisible until user hovers over todo */
+    border: none;
     border-radius: 50%;
+    height: 24px;
+    flex: 0 0 24px;
+    display: grid;
+    bottom: 2px;
+    left: 10px;
+    margin-left: 6px;
+    place-content: center;
+    cursor: pointer;
+    background-color: transparent;
 }
 
-.title-prio-wrap:hover .remove-todo-button {
-    display: inline-block;
-    cursor: pointer;
+.remove-todo-button:hover {
+    background-color: rgba(255, 255, 255, 0.687);
+}
+
+
+.remove-todo-button:hover svg {
+    fill: rgb(43, 43, 43);
+}
+
+.remove-todo-button svg {
+    fill: rgb(80, 80, 80);
+}
+
+.todo-item:hover .remove-todo-button {
+    visibility: visible;
 }
 
 
 .todo-info {
-    border: 1px solid black;
+    margin-left: 2rem;
     display: flex;
     align-items: center;
+    gap: 5px;
 }
 
-.priority-indicator {
-    background-color: orange;
-    /* width: 15px; */
-    height: 15px;
-    border-radius: 50%;
-    flex: 0 0 15px;
+.due-date {
+    font-weight: 400;
+    font-size: 14px;
+    color: #4f64dc;
+}
+
+.date-picker {
+    vertical-align: top;
+    height: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    color: #4f64dc;
 }
 
 
 
-/* air date picker */
-
-#calendar {
-height: 100px;
-}
-
-
-
-body {
-    
-}

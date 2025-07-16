@@ -169,7 +169,7 @@ class ProjectElement {
         });
 
         const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "DLT";
+        deleteBtn.innerHTML = CROSS_SVG;
         deleteBtn.classList.add("delete-proj-button");
         deleteBtn.addEventListener("click", () => {
             this.deleteProjectClickHandler();
@@ -216,6 +216,9 @@ class ProjectElement {
 
 }
 
+const CROSS_SVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+</svg>`;
 
 
 // class for creating todo instances as DOM elements 
@@ -237,14 +240,19 @@ class TodoElement {
         todo.classList.add("todo-item");
 
         const wrap = document.createElement("div");
-        wrap.classList.add("title-prio-wrap");
+        wrap.classList.add("check-text-wrap");
 
         const info = document.createElement("div");
         info.classList.add("todo-info");
 
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.classList.add("done-check")
+
         this.text = document.createElement("div");
         this.text.classList.add("todo-text");
         this.text.contentEditable = "plaintext-only";
+        this.text.spellcheck = false;
         this.text.textContent = this.todo.text; 
         this.text.addEventListener("blur", () => {
             // store user text input once user clicks away from todo item
@@ -253,6 +261,7 @@ class TodoElement {
 
         const removeBtn = document.createElement("button");
         removeBtn.classList.add("remove-todo-button");
+        removeBtn.innerHTML = CROSS_SVG;
         removeBtn.addEventListener("click", () => {
             this.handleRemoveClick();
         });
@@ -278,8 +287,8 @@ class TodoElement {
 
         // const prio = document.createElement("div");
         // prio.classList.add("priority-indicator");
+        wrap.append(checkbox, this.text, removeBtn);
         info.append(dueBy, datePicker);
-        wrap.append(this.text, removeBtn);
         todo.append(wrap, info);
 
         return todo;
@@ -349,6 +358,7 @@ const UI = (() => {
     function openAddProjectPopup() {
         newProjectButton.classList.add("hidden");
         newProjectPopup.classList.remove("hidden");
+        projectNameInput.focus();
     };
 
     function closeAddProjectPopup() {
