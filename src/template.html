@@ -12,13 +12,19 @@
 
 
     <div class="navbar">
+
         <h1>StuffNeedsDoing</h1>
+
+        <button id="my-projects" class="nav-button">My Projects</button>
+        <button id="due-soon" class="nav-button">Due Soon</button>
+        
         <button id="new-project-button">+ New Project</button>
         <div id="new-project-popup" class="hidden">
             <input type="text" id="project-name-input" placeholder="Project Name" autocomplete="off">
             <button id="confirm-button" class="popup-buttons">Confirm</button>
             <button id="cancel-button" class="popup-buttons">Cancel</button>
         </div>
+
     </div>
 
 
@@ -26,38 +32,7 @@
 
         <ul id="projects">
 
-            <li class="project">
-
-                <div class="title-button-wrapper">
-                    <h2 class="project-title">Personal Tasks</h2>
-                    <button class="new-task-button">+ New Task</button>
-                    <button class="delete-proj-button">
-                        
-                    </button>
-                </div>
-                
-                <ul class="todos-list">
-
-                    <li class="todo-item">
-
-                        <div class="check-text-wrap">
-                            <input type="checkbox" class="done-check">
-                            <div contenteditable="plaintext-only" class="todo-text">This is a visual test project</div>
-                            <button class="remove-todo-button"></button>
-                        </div>
-
-                        <div class="todo-info">
-                            <!-- <div class="priority-indicator"></div> -->
-                            <div class="due-date">Due:</div>
-                            <input type="text" class="date-picker" placeholder="Select Date">
-                        </div>
-
-                    </li>
-
-                    
-
-                </ul>
-            </li>
+            
 
         </ul>
     
